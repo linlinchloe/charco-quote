@@ -1036,7 +1036,10 @@
   function populateProductSelect(sel, mode) {
     const opts = ['<option value="">-- 選擇產品 --</option>'];
     uniqueProducts(mode).forEach(p => {
-      opts.push(`<option value="${p.name}|${p.model}">${p.name} (${p.model})</option>`);
+      // NPPA-FSC- 開頭的代碼不對外顯示，只留中文名（代碼仍保留於 value 供內部比對）
+      const showCode = p.model && !p.model.startsWith('NPPA-FSC-');
+      const label = showCode ? `${p.name} (${p.model})` : p.name;
+      opts.push(`<option value="${p.name}|${p.model}">${label}</option>`);
     });
     sel.innerHTML = opts.join('');
   }
